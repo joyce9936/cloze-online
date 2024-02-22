@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sentence completion</title>
+    <script src="jatos.js"></script>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-audio-button-response.js"></script>
+    <script src="jspsych/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugin-survey-html-form.js"></script>
+    <script src="jspsych/plugin-survey-text.js"></script>
+    <script src="jspsych/plugin-survey-multi-choice.js"></script>
+    <script src="jspsych/plugin-cloze.js"></script>
+    <script src="lib/assets.js"></script>
+    <script src="lib/consent.js"></script>
+    <script src="lib/chap1_seg1.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+    const timeline = [];
+    const exp_timeline = [];
+    const jsPsych = initJsPsych({
+      on_trial_start: jatos.addAbortButton,
+      on_finish: () => jatos.endStudy()
+    });
+    
+    jatos.onLoad(() => {
+
+      
+      /////////////////////////////////
+      // Adding info to data         /
+      ///////////////////////////////
+      var subject_ID = jsPsych.randomization.randomID(15);
+      var url_prolific_ID = jatos.urlQueryParameters.PROLIFIC_PID;
+      jsPsych.data.addProperties({ subject_id: subject_ID, prolificID: url_prolific_ID });
+
+      /////////////////////////////////
+      // Start of experiment         /
+      ///////////////////////////////
+      const welcome = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "Welcome! Please read the following consent form and remember scroll to the bottom.",
+        choices: ["Continue"]
+      }
+      timeline.push(welcome);
+
+      const consent_page = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: consent_text,
+        choices: ["Continue"]
+      }
+
+      timeline.push(consent_page);
+
+      const sound_warning = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "In order to test that you have everything set up, we will play sound on the next page. Before continuing, please make sure that you either have your speakers or headphones turned on and working.",
+        choices: ["Continue"]
+      }
+
+      timeline.push(sound_warning);
+
+      /////////////////////////////////
+      // Instructions                /
+      ///////////////////////////////
+      const instructions = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus:
+          "<p> In this task, you will see the beginning of a sentence and you will finish the sentence with the first thing that comes to mind.\nYou can hit 'enter' after you enter your word to continue to the next sentence.</p> <p> Please press the space bar to start.</p><p>(If you are unable to continue, you may need to click on this text before pressing the space bar)</p>",
+        choices: [" "],
+      };
+      exp_timeline.push(instructions);
+
+      /////////////////////////////////
+      // First warm-up task          /
+      ///////////////////////////////
+      const independent_task0 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("stimuli"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_independent_task0 = {
+        timeline: [independent_task0],
+        timeline_variables: independent_task_0,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("stimuli"),
+          stimulus: " ",
+        }
+      };
+
+      exp_timeline.push(print_out_independent_task0);
+
+      // Experiment parameters
+      var sentences;
+      sentences = jsPsych.randomization.shuffle(verb_stimuli);
+      var part1 = verb_stimuli.slice(0, 42);
+      var part2 = verb_stimuli.slice(42, 84);
+      var part3 = verb_stimuli.slice(84, 126);
+      var part4 = verb_stimuli.slice(126, 166);
+      /////////////////////////////////
+      // NEW Experiment chunk           /
+      ///////////////////////////////
+      var word_stimuli
+      var cloze_stimuli = word_stimuli.map((item, index) => {
+        if(index < word_stimuli.length - 1) {
+      // Return the cloze sentence for all but the last item
+        return item.WORD + " % %";
+      } else {
+      // Return the last item without a blank
+        return item.WORD;
+      }
+    });
+      // Modify the cloze trial 
+      var cloze_trial = {
+      type: jsPsychCloze,
+      text: function() {
+      // Join the cloze stimuli into a single string
+        return cloze_stimuli.join(" ");
+      },
+      check_answers: true,
+      button_text: 'Next'
+    };
+      // Add the cloze trial to the experiment timeline
+      exp_timeline.push(cloze_trial);
+      /////////////////////////////////
+      // Experiment chunk 1          /
+      ///////////////////////////////
+      const trial1 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("SENTENCE"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_sentences1 = {
+        timeline: [trial1],
+        timeline_variables: part1,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("SENTENCE"),
+          verb: jsPsych.timelineVariable("verb"),
+          animal: jsPsych.timelineVariable("animal"),
+          norm_category: jsPsych.timelineVariable("norm_category"),
+          stimulus: " ",
+        }
+      };
+      exp_timeline.push(print_out_sentences1);
+
+      // Catch trial
+      const independent_task1 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("stimuli"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_independent_task1 = {
+        timeline: [independent_task1],
+        timeline_variables: independent_task_1,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("stimuli"),
+          stimulus: " ",
+        },
+        on_finish: function(data) {
+          jatos.submitResultData(jsPsych.data.get().json());
+        }
+      };
+      exp_timeline.push(print_out_independent_task1);
+
+      /////////////////////////////////
+      // Experiment chunk 2          /
+      ///////////////////////////////
+      const trial2 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("SENTENCE"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_sentences2 = {
+        timeline: [trial2],
+        timeline_variables: part2,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("SENTENCE"),
+          verb: jsPsych.timelineVariable("verb"),
+          animal: jsPsych.timelineVariable("animal"),
+          norm_category: jsPsych.timelineVariable("norm_category"),
+          stimulus: " ",
+        }
+      };
+      exp_timeline.push(print_out_sentences2);
+
+      // Catch trial
+      const independent_task2 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("stimuli"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_independent_task2 = {
+        timeline: [independent_task2],
+        timeline_variables: independent_task_2,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("stimuli"),
+          stimulus: " ",
+        },
+        on_finish: function(data) {
+          jatos.submitResultData(jsPsych.data.get().json());
+        }
+      };
+      exp_timeline.push(print_out_independent_task2);
+
+      /////////////////////////////////
+      // Experiment chunk 3          /
+      ///////////////////////////////
+      const trial3 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("SENTENCE"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_sentences3 = {
+        timeline: [trial3],
+        timeline_variables: part3,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("SENTENCE"),
+          verb: jsPsych.timelineVariable("verb"),
+          animal: jsPsych.timelineVariable("animal"),
+          norm_category: jsPsych.timelineVariable("norm_category"),
+          stimulus: " ",
+        }
+      };
+      exp_timeline.push(print_out_sentences3);
+
+      // Catch trial
+      const independent_task3 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("stimuli"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_independent_task3 = {
+        timeline: [independent_task3],
+        timeline_variables: independent_task_3,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("stimuli"),
+          stimulus: " ",
+        },
+        on_finish: function(data) {
+          jatos.submitResultData(jsPsych.data.get().json());
+        }
+      };
+      exp_timeline.push(print_out_independent_task3);
+
+      /////////////////////////////////
+      // Experiment chunk 4          /
+      ///////////////////////////////
+      const trial4 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("SENTENCE"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_sentences4 = {
+        timeline: [trial4],
+        timeline_variables: part4,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("SENTENCE"),
+          verb: jsPsych.timelineVariable("verb"),
+          animal: jsPsych.timelineVariable("animal"),
+          norm_category: jsPsych.timelineVariable("norm_category"),
+          stimulus: " ",
+        }
+      };
+      exp_timeline.push(print_out_sentences4);
+
+      // Catch trial
+      const independent_task4 = {
+        type: jsPsychSurveyHtmlForm,
+        html: jsPsych.timelineVariable("stimuli"),
+        autofocus: 'test-resp-box'
+      };
+
+      const print_out_independent_task4 = {
+        timeline: [independent_task4],
+        timeline_variables: independent_task_4,
+        randomize_order: true,
+        data: {
+          given_sentence: jsPsych.timelineVariable("stimuli"),
+          stimulus: " ",
+        },
+        on_finish: function(data) {
+          jatos.submitResultData(jsPsych.data.get().json());
+        }
+      };
+      exp_timeline.push(print_out_independent_task4);
+
+      const if_trial = {
+          type: jsPsychAudioButtonResponse,
+          stimulus: 'lib/tones.mp3',
+          choices: ['Lower','Higher'],
+          prompt: '<p>Is the pitch of the second tone lower or higher than the first?</p>'
+      }
+
+
+      const if_node = {
+          timeline: exp_timeline,
+          conditional_function: function(){
+              var data = jsPsych.data.get().last(1).values()[0];
+              if(data.response == 0){
+                  return false;
+              } else {
+                  return true;
+              }
+          }
+      }
+
+      timeline.push(if_trial, if_node);
+
+      ////////////////
+      // End        /
+      //////////////
+      const end = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "Thank you for participating!\nPlease press the button to continue.\nYou will be redirected back to Prolific.",
+        choices: ["Continue"],
+        on_finish: function(data) {
+          jatos.submitResultData(jsPsych.data.get().json());
+        }
+      };
+
+      timeline.push(end);
+
+
+      jsPsych.run(timeline);
+    })
+  </script>
+</html>
