@@ -66,14 +66,14 @@
       /////////////////////////////////
       // First warm-up task          /
       ///////////////////////////////
-      const practice_trial = {
+      const practice_trial1 = {
         type: jsPsychSurveyHtmlForm,
         html: jsPsych.timelineVariable("stimuli"),
         autofocus: 'test-resp-box'
       };
 
       const print_out_practice_trial = {
-        timeline: [practice_trial],
+        timeline: [practice_trial1],
         timeline_variables: practice_trial,
         randomize_order: false,
         data: {
@@ -95,7 +95,7 @@
       ///////////////////////////////
       const trial1 = {
         type: jsPsychSurveyHtmlForm,
-        html: jsPsych.timelineVariable("WORD"),
+        html: jsPsych.timelineVariable("SENTENCE"),
         autofocus: 'test-resp-box'
       };
 
@@ -105,9 +105,9 @@
         randomize_order: false,
         required:true,
         data: {
-          given_sentence:jsPsych.timelineVariable("SEN") ,
+          given_sentence:jsPsych.timelineVariable("ITEM") ,
           target:jsPsych.timelineVariable("TARGET"),
-          stimulus:jsPsych.timelineVariable("WORD") 
+          stimulus:jsPsych.timelineVariable(" ") 
         }
       };
       exp_timeline.push(print_out_sentences1);
@@ -120,33 +120,13 @@
       }
 
       exp_timeline.push(break_1);
-
-      // const independent_task1 = {
-      //   type: jsPsychSurveyHtmlForm,
-      //   html: jsPsych.timelineVariable("stimuli"),
-      //   autofocus: 'test-resp-box'
-      // };
-
-      // const print_out_independent_task1 = {
-      //   timeline: [independent_task1],
-      //   timeline_variables: independent_task_1,
-      //   randomize_order: true,
-      //   data: {
-      //     given_sentence: jsPsych.timelineVariable("stimuli"),
-      //     stimulus: " ",
-      //   },
-      //   on_finish: function(data) {
-      //     jatos.submitResultData(jsPsych.data.get().json());
-      //   }
-      // };
-      // exp_timeline.push(print_out_independent_task1);
    
       // /////////////////////////////////
       // // Experiment chunk 2          /
       // ///////////////////////////////
       const trial2 = {
         type: jsPsychSurveyHtmlForm,
-        html: jsPsych.timelineVariable("WORD"),
+        html: jsPsych.timelineVariable("SENTENCE"),
         autofocus: 'test-resp-box'
       };
 
@@ -156,9 +136,9 @@
         randomize_order: false,
         required:true,
         data: {
-          given_sentence:jsPsych.timelineVariable("SEN") ,
+          given_sentence:jsPsych.timelineVariable("ITEM") ,
           target:jsPsych.timelineVariable("TARGET"),
-          stimulus:jsPsych.timelineVariable("WORD") 
+          stimulus:jsPsych.timelineVariable(" ") 
         }
       };
       exp_timeline.push(print_out_sentences2);
@@ -172,34 +152,12 @@
 
       exp_timeline.push(break_2);
 
-      
-      // // Catch trial
-      // const independent_task2 = {
-      //   type: jsPsychSurveyHtmlForm,
-      //   html: jsPsych.timelineVariable("stimuli"),
-      //   autofocus: 'test-resp-box'
-      // };
-
-      // const print_out_independent_task2 = {
-      //   timeline: [independent_task2],
-      //   timeline_variables: independent_task_2,
-      //   randomize_order: true,
-      //   data: {
-      //     given_sentence: jsPsych.timelineVariable("stimuli"),
-      //     stimulus: " ",
-      //   },
-      //   on_finish: function(data) {
-      //     jatos.submitResultData(jsPsych.data.get().json());
-      //   }
-      // };
-      // exp_timeline.push(print_out_independent_task2);
-
       // /////////////////////////////////
       // // Experiment chunk 3          /
       // ///////////////////////////////
       const trial3 = {
         type: jsPsychSurveyHtmlForm,
-        html: jsPsych.timelineVariable("WORD"),
+        html: jsPsych.timelineVariable("SENTENCE"),
         autofocus: 'test-resp-box'
       };
 
@@ -209,9 +167,9 @@
         randomize_order: false,
         required:true,
         data: {
-          given_sentence:jsPsych.timelineVariable("SEN") ,
+          given_sentence:jsPsych.timelineVariable("ITEM") ,
           target:jsPsych.timelineVariable("TARGET"),
-          stimulus:jsPsych.timelineVariable("WORD") 
+          stimulus:jsPsych.timelineVariable(" ") 
         }
       };
       exp_timeline.push(print_out_sentences1);
@@ -225,34 +183,12 @@
 
       exp_timeline.push(break_3);
 
-
-      // // Catch trial
-      // const independent_task3 = {
-      //   type: jsPsychSurveyHtmlForm,
-      //   html: jsPsych.timelineVariable("stimuli"),
-      //   autofocus: 'test-resp-box'
-      // };
-
-      // const print_out_independent_task3 = {
-      //   timeline: [independent_task3],
-      //   timeline_variables: independent_task_3,
-      //   randomize_order: true,
-      //   data: {
-      //     given_sentence: jsPsych.timelineVariable("stimuli"),
-      //     stimulus: " ",
-      //   },
-      //   on_finish: function(data) {
-      //     jatos.submitResultData(jsPsych.data.get().json());
-      //   }
-      // };
-      // exp_timeline.push(print_out_independent_task3);
-
       // /////////////////////////////////
       // // Experiment chunk 4          /
       // ///////////////////////////////
       const trial4 = {
         type: jsPsychSurveyHtmlForm,
-        html: jsPsych.timelineVariable("WORD"),
+        html: jsPsych.timelineVariable("SENTENCE"),
         autofocus: 'test-resp-box'
       };
 
@@ -262,43 +198,16 @@
         randomize_order: false,
         required:true,
         data: {
-          given_sentence:jsPsych.timelineVariable("SEN") ,
+          given_sentence:jsPsych.timelineVariable("ITEM") ,
           target:jsPsych.timelineVariable("TARGET"),
-          stimulus:jsPsych.timelineVariable("WORD") 
+          stimulus:jsPsych.timelineVariable(" ") 
         }
       };
       exp_timeline.push(print_out_sentences4);
 
-      // // Break trial
-      // const break_4 = {
-      //   type: jsPsychHtmlButtonResponse,
-      //   stimulus: "Please press continue when you are ready.",
-      //   choices: ["Continue"]
-      // }
-
-      // timeline.push(break_4);
-
-      // Catch trial
-      // const independent_task4 = {
-      //   type: jsPsychSurveyHtmlForm,
-      //   html: jsPsych.timelineVariable("stimuli"),
-      //   autofocus: 'test-resp-box'
-      // };
-
-      // const print_out_independent_task4 = {
-      //   timeline: [independent_task4],
-      //   timeline_variables: independent_task_4,
-      //   randomize_order: true,
-      //   data: {
-      //     given_sentence: jsPsych.timelineVariable("stimuli"),
-      //     stimulus: " ",
-      //   },
-      //   on_finish: function(data) {
-      //     jatos.submitResultData(jsPsych.data.get().json());
-      //   }
-      // };
-      // exp_timeline.push(print_out_independent_task4);
-
+      // /////////////////////////////////
+      // // DEMOGRAPHICS          /
+      // ///////////////////////////////
 
       const consent = {
         type: jsPsychHtmlButtonResponse,
